@@ -12,7 +12,7 @@ if (isset($_GET["start"])) {
 if (isset($_GET["end"])) {
     $end = $_GET["end"];
 }
-$employees = getEmployeesWithAttendanceCount($start, $end);
+$employees = getEmployeesWithAttendance($start, $end);
 ?>
 <div class="row">
     <div class="col-12">
@@ -25,7 +25,7 @@ $employees = getEmployeesWithAttendanceCount($start, $end);
             <input required id="start" type="date" name="start" value="<?php echo $start ?>" class="form-control mr-2">
             <label for="end">End:&nbsp;</label>
             <input required id="end" type="date" name="end" value="<?php echo $end ?>" class="form-control">
-            <button class="btn btn-success ml-2">Filter</button>
+            <button class="btn btn-success ml-2">Filtro</button>
         </form>
     </div>
     <div class="col-12">
@@ -33,9 +33,10 @@ $employees = getEmployeesWithAttendanceCount($start, $end);
             <table class="table">
                 <thead>
                     <tr>
-                        <th>Employee</th>
-                        <th>Presence count</th>
-                        <th>Absence count</th>
+                        <th>Empleados</th>
+                        <th>Fecha</th>
+                        <th>Hora de ingreso</th>
+                        <th>Hora de salida</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -45,10 +46,13 @@ $employees = getEmployeesWithAttendanceCount($start, $end);
                                 <?php echo $employee->name ?>
                             </td>
                             <td>
-                                <?php echo $employee->presence_count ?>
+                                <?php echo $employee->date ?>
                             </td>
                             <td>
-                                <?php echo $employee->absence_count ?>
+                                <?php echo $employee->Hora_de_ingreso ?>
+                            </td>
+                            <td>
+                                <?php echo $employee->Hora_de_salida ?>
                             </td>
                         </tr>
                     <?php } ?>

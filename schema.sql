@@ -7,5 +7,6 @@ CREATE TABLE employee_attendance(
     employee_id BIGINT UNSIGNED NOT NULL,
     date VARCHAR(10) NOT NULL,
     status ENUM('presence', 'absence'),
+    Hora_de_ingreso VARCHAR(250), Hora_de_salida VARCHAR(250),
     FOREIGN KEY (employee_id) REFERENCES employees(id) ON UPDATE CASCADE ON DELETE CASCADE
 );

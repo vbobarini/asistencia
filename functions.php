@@ -1,15 +1,12 @@
 <?php
 ?>
 <?php
-function getEmployeesWithAttendanceCount($start, $end)
+function getEmployeesWithAttendance($start, $end)
 {
-    $query = "select employees.name, 
-sum(case when status = 'presence' then 1 else 0 end) as presence_count,
-sum(case when status = 'absence' then 1 else 0 end) as absence_count 
+    $query = "select employees.name,date,Hora_de_ingreso,Hora_de_salida
  from employee_attendance
  inner join employees on employees.id = employee_attendance.employee_id
- where date >= ? and date <= ?
- group by employee_id;";
+ where date >= ? and date <= ?;";
     $db = getDatabase();
     $statement = $db->prepare($query);
     $statement->execute([$start, $end]);
@@ -21,9 +18,12 @@ function saveAttendanceData($date, $employees)
     deleteAttendanceDataByDate($date);
     $db = getDatabase();
     $db->beginTransaction();
-    $statement = $db->prepare("INSERT INTO employee_attendance(employee_id, date, status) VALUES (?, ?, ?)");
+    $statement = $db->prepare("INSERT INTO employee_attendance(employee_id, date, status, Hora_de_ingreso, Hora_de_salida ) VALUES (?, ?, ?, ?, ?)");
     foreach ($employees as $employee) {
-        $statement->execute([$employee->id, $date, $employee->status]);
+        $statement->execute([$employee->id, $date, $employee->status,
+        $employee->Hora_de_ingreso,
+        $employee->Hora_de_salida
+    ]);
     }
     $db->commit();
     return true;
@@ -38,7 +38,7 @@ function deleteAttendanceDataByDate($date)
 function getAttendanceDataByDate($date)
 {
     $db = getDatabase();
-    $statement = $db->prepare("SELECT employee_id, status FROM employee_attendance WHERE date = ?");
+    $statement = $db->prepare("SELECT employee_id, status,Hora_de_ingreso, Hora_de_salida FROM employee_attendance WHERE date = ?");
     $statement->execute([$date]);
     return $statement->fetchAll();
 }
